@@ -2,6 +2,7 @@ import { WebGLRenderer } from "three";
 import sizes from "../../utils/Sizes";
 import { scene } from "./scene";
 import { camera } from "./camera";
+import gsap from "gsap";
 
 let instance: WebGLRenderer | null = null;
 
@@ -14,6 +15,7 @@ const init = (canvas: HTMLCanvasElement) => {
   });
 
   sizes.on("resize", resize);
+  gsap.ticker.add(tick);
   resize();
 };
 

@@ -1,5 +1,6 @@
 import { Mesh, BoxGeometry, MeshBasicMaterial } from "three";
 import { scene } from "../../core/scene";
+import gsap from "gsap";
 
 let mesh: Mesh | null = null;
 let geometry: BoxGeometry | null = null;
@@ -12,6 +13,7 @@ const init = () => {
   mesh = new Mesh(geometry, material);
 
   scene.instance.add(mesh);
+  gsap.ticker.add(tick);
 };
 
 const tick = () => {
