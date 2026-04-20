@@ -1,15 +1,16 @@
-import { camera, renderer } from "./core";
+import { camera } from "./core/camera";
+import { renderer } from "./core/renderer";
 import { objects } from "./objects";
 
-function init(canvas: HTMLCanvasElement) {
+const init = (canvas: HTMLCanvasElement) => {
   renderer.init(canvas);
   objects.init();
   camera.init();
-}
+};
 
-function destroy() {
-  objects.destroy();
+const destroy = () => {
   renderer.destroy();
-}
+  objects.destroy();
+};
 
 export const three = { init, destroy };

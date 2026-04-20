@@ -11,5 +11,3 @@ onMounted(() => {
 <template>
   <ThreeCanvas />
 </template>
-
-<style scoped></style>
