@@ -4,41 +4,46 @@ import { scene } from "./scene";
 import { camera } from "./camera";
 import gsap from "gsap";
 
-let instance: WebGLRenderer | null = null;
+class Renderer {
+  instance: WebGLRenderer | null;
+  constructor() {
+    this.instance = null;
+  }
 
-const init = (canvas: HTMLCanvasElement) => {
-  if (instance) return;
-  instance = new WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-  });
+  init(canvas: HTMLCanvasElement) {
+    if (this.instance) return;
+    this.instance = new WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+    });
 
-  sizes.on("resize", resize);
-  gsap.ticker.add(tick);
-  resize();
-};
+    sizes.on("resize", this.#resize.bind(this));
+    gsap.ticker.add(this.#ticker.bind(this));
+    this.#resize();
+  }
 
-const getInstance = () => {
-  if (!instance) throw new Error("Renderer not initialized");
-  return instance;
-};
+  getInstance = () => {
+    if (!this.instance) throw new Error("Renderer not initialized");
+    return this.instance;
+  };
 
-const resize = () => {
-  if (!instance) return;
-  instance.setSize(sizes.width, sizes.height);
-  instance.setPixelRatio(sizes.pixelRatio);
-};
+  #ticker() {
+    if (!this.instance) return;
+    this.instance.render(scene.instance, camera.instance!);
+  }
 
-const tick = () => {
-  if (!instance) return;
-  instance.render(scene.instance, camera.instance);
-};
+  #resize() {
+    if (!this.instance) return;
+    this.instance?.setSize(sizes.width, sizes.height);
+    this.instance?.setPixelRatio(sizes.pixelRatio);
+  }
 
-const destroy = () => {
-  if (!instance) return;
-  instance.dispose();
-  instance = null;
-};
+  destroy() {
+    if (!this.instance) return;
+    this.instance.dispose();
+    this.instance = null;
+  }
+}
 
-export const renderer = { init, destroy, getInstance };
+export const renderer = new Renderer();
